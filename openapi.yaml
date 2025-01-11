@@ -1,0 +1,48 @@
+swagger: "2.0"
+info:
+  title: "qudebe-backend"
+  description: "API Gateway for Qude Backend"
+  version: "1.0.0"
+host: "qudebe-backend-gateway-1093v6at.uc.gateway.dev"
+schemes:
+  - https
+paths:
+  /check-agent/{agentName}:
+    get:
+      summary: "Check if an agent exists"
+      operationId: "checkAgent"
+      parameters:
+        - name: "agentName"
+          in: "path"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Successful response"
+        "403":
+          description: "Forbidden"
+      x-google-backend:
+        address: "https://qudebe-backend-78914853029.us-central1.run.app"
+
+  /store-agent:
+    post:
+      summary: "Store agent details"
+      operationId: "storeAgent"
+      parameters:
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              agentName:
+                type: "string"
+              agentDetails:
+                type: "object"
+      responses:
+        "200":
+          description: "Successful response"
+        "403":
+          description: "Forbidden"
+      x-google-backend:
+        address: "https://qudebe-backend-78914853029.us-central1.run.app"

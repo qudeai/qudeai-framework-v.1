@@ -1,0 +1,31 @@
+{
+    "name": "qudeai-framework",
+    "version": "1.0.0",
+    "description": "qudeai agent framework",
+    "type": "module",
+    "main": "src/defineagent.ts",
+    "scripts": {
+        "interactqude": "npm run build > /dev/null 2>&1 && node --no-deprecation dist/interactAgent.js",
+        "deployqude": "npm run build --silent > /dev/null 2>&1 && node --no-deprecation dist/deployAgent.js",
+        "askqude": "npm run build --silent > /dev/null 2>&1 && node --no-deprecation dist/askAgent.js",
+        "qude-trade": "node --no-deprecation dist/trade.js",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@solana/web3.js": "^1.98.0",
+        "@types/form-data": "^2.5.2",
+        "bs58": "^6.0.0",
+        "dotenv": "^16.4.7",
+        "firebase": "^11.1.0",
+        "form-data": "^4.0.1",
+        "node-fetch": "^3.3.2",
+        "openai": "^4.77.3",
+        "punycode": "^2.3.1"
+    },
+    "devDependencies": {
+        "@types/node-fetch": "^2.6.12",
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.7.3"
+    }
+}
