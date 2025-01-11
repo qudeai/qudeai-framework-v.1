@@ -1,4 +1,6 @@
 
+![Logo](https://res.cloudinary.com/docg651du/image/upload/v1736615346/tnibkgr76euzcbhvqir1.png)
+
 # QudeAI Agent Framework
 ##### The Qude Framework open-source code allows users to create AI agents directly in their CLI, with Qude acting as a co-pilot to help build them. The Qude API enables interaction with the AI agents created using the Qude Framework's open-source code.
 
