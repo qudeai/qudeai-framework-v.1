@@ -15,5 +15,5 @@ If you find a bug or have a feature request, please open an issue in the GitHub 
 1. Fork this repository by clicking the "Fork" button at the top-right corner of the GitHub page.
 2. Clone the repository to your local machine:
    ```bash
-   git clone https://github.com/<your-username>/qudeai-framework-v.1.git
+   git clone [https://github.com/qudeai/qudeai-framework-v.1](https://github.com/qudeai/qudeai-framework-v.1.git)
    cd qudeai-framework-v.1
