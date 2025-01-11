@@ -26,7 +26,7 @@
 ### Installation 
 1. Clone the repository
 ``` bash 
-git clone [https://github.com/qudeai/qudeai-framework-v.1](https://github.com/qudeai/qudeai-framework-v.1.git)
+git clone https://github.com/qudeai/qudeai-framework-v.1.git
 cd qudeai-framework-v.1
 ```
 2. Install dependencies:
