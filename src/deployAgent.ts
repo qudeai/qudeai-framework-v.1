@@ -14,12 +14,14 @@ const web3Connection = new Connection(RPC_ENDPOINT, "confirmed");
 async function sendLocalCreateTx() {
     const agentName = agentDetails.name;
 
+    // Check if the agent already exists
     const agentExists = await checkAgentExists(agentName);
     if (agentExists) {
         console.error(`Agent "${agentName}" already exists. Try another name.`);
         return;
     }
 
+    // Validate the private keypair
     const secretKey = process.env.PRIVATE_KEYPAIR;
     if (!secretKey) {
         throw new Error("PRIVATE_KEYPAIR is not set in the .env file!");
@@ -27,6 +29,7 @@ async function sendLocalCreateTx() {
     const signerKeyPair = Keypair.fromSecretKey(bs58.decode(secretKey));
     const mintKeypair = Keypair.generate();
 
+    // Prepare metadata upload
     const FormData = (await import("form-data")).default;
     const formData = new FormData();
     formData.append("file", fs.createReadStream(agentDetails.imagePath));
@@ -51,6 +54,7 @@ async function sendLocalCreateTx() {
         metadataUri: string;
     };
 
+    // Create the token on Solana
     const response = await fetch("https://pumpportal.fun/api/trade-local", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -78,13 +82,21 @@ async function sendLocalCreateTx() {
         const signature = await web3Connection.sendTransaction(tx);
 
         console.log(`Transaction successful: https://solscan.io/tx/${signature}`);
-        await storeAgent(agentName, agentDetails);
+
+        // Store agent details in Firebase, including personality
+        await storeAgent(agentName, { 
+            ...agentDetails, 
+            mintAddress: mintKeypair.publicKey.toBase58(), 
+            personality: agentDetails.personality // Save the personality field
+        });
+
+        console.log(`Agent "${agentName}" and mint address saved to Firebase.`);
     } else {
         console.error(`Error creating token: ${response.statusText}`);
     }
 }
 
-
 sendLocalCreateTx().catch((error) => {
     console.error("An error occurred during deployment:", error);
 });
+
