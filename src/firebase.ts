@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 
-const BACKEND_URL = "https://qudebe-backend-78914853029.us-central1.run.app";
+const BACKEND_URL = "https://api.qude.ai/";
 
 export async function checkAgentExists(agentName: string): Promise<boolean> {
   try {
