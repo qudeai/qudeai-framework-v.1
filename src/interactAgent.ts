@@ -1,8 +1,11 @@
 import fetch from "node-fetch";
-import { checkAgentExists } from "./firebase.js"; 
+import { checkAgentExists } from "./firebase.js"; // Backend-based Firebase integration
+import { getAgentData } from "./firebase.js";
+
+
 
 const BITQUERY_API_URL = "https://streaming.bitquery.io/eap";
-const BITQUERY_API_KEY = "YOUR_BITQUERY_API_KEY";
+const BITQUERY_API_KEY = "YOUR_API_KEY";
 
 interface TokenSupplyUpdate {
   Marketcap: string;
@@ -304,9 +307,13 @@ async function interactAgent(agentName: string, question: string): Promise<void>
   const agentExists = await checkAgentExists(agentName);
 
   if (!agentExists) {
-    console.error(`Cannot process request. Agent "${agentName}" is not registered.`);
-    return;
+      console.error(`Cannot process request. Agent "${agentName}" is not registered.`);
+      return;
   }
+  
+  const agentData = await getAgentData(agentName); // Retrieve agent data
+  const personality = agentData?.personality || "neutral"; // Default to "neutral" if not set
+  
 
   if (hasMarketcapKeywords) {
     const countMatch = question.match(/count:\s*(\d+)/i);
@@ -353,6 +360,11 @@ if (args.length < 3 || args[1] !== "ask") {
 
 const agentName = args[0];
 const question = args.slice(2).join(" ");
+
+interactAgent(agentName, question).catch((error) => {
+  console.error("An error occurred:", error);
+});
+
 
 interactAgent(agentName, question).catch((error) => {
   console.error("An error occurred:", error);
