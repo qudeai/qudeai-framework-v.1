@@ -1,23 +1,27 @@
 import fetch from "node-fetch";
-import { checkAgentExists } from "./firebase.js";
-import { OpenAI } from "openai"; 
+import { getAgentData } from "./firebase.js";
+import { OpenAI } from "openai";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 const openAi = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 async function validateAgentAndRespond(agentName: string, userMessage: string) {
-  const agentExists = await checkAgentExists(agentName);
+  const agentData = await getAgentData(agentName);
 
-  if (!agentExists) {
-    console.error(`Error: Agent "${agentName}" does not exist in the database.`);
+  if (!agentData) {
+    console.error(`Error: Agent "${agentName}" does not exist or has no data.`);
     return;
   }
+
   try {
     const response = await openAi.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: `You are ${agentName}, a helpful AI agent.` },
+        {
+          role: "system",
+          content: `You are ${agentName}, an AI agent with the following personality: "${agentData.personality}". Respond to the user based on this personality.`,
+        },
         { role: "user", content: userMessage },
       ],
     });
@@ -35,8 +39,8 @@ if (args.length < 2) {
   process.exit(1);
 }
 
-const agentName = args[0]; 
-const userMessage = args.slice(1).join(" "); 
+const agentName = args[0];
+const userMessage = args.slice(1).join(" ");
 validateAgentAndRespond(agentName, userMessage).catch((error) => {
   console.error("An error occurred:", error);
 });
