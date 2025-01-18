@@ -34,3 +34,18 @@ export async function storeAgent(agentName: string, agentDetails: any): Promise<
     console.error("Error storing agent details through backend:", (error as Error).message);
   }
 }
+
+export async function getAgentData(agentName: string): Promise<{ personality: string } | null> {
+  try {
+    const response = await fetch(`https://api.qude.ai/api/agent/${agentName}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching agent data: ${response.statusText}`);
+    }
+
+    const data = (await response.json()) as { personality: string };
+    return data;
+  } catch (error) {
+    console.error("Error fetching agent data from api.qude.ai:", (error as Error).message);
+    return null;
+  }
+}
